@@ -1,0 +1,57 @@
+name: Build and Deploy to CloudRun Develop
+on:
+  push:
+    branches:
+      - develop
+      
+env:
+  PROJECT_ID: shift-dev-381423
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+
+jobs:
+  BuildandDeploytoCloudRunDevelop:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Setup gcloud CLI
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      id: 'auth'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+    - name: Login to GAR
+      uses: docker/login-action@v2
+      with:
+        registry: us-east1-docker.pkg.dev
+        username: _json_key
+        password: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+    - name: Push in Docker Image to Artifact Registry
+      id: build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: us-east1-docker.pkg.dev/${{ env.PROJECT_ID }}/shift-portal-dev/shift-portal:develop-${{ github.run_number }}
+
+    - uses: 'google-github-actions/deploy-cloudrun@v0'
+      id: deploy
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+        service: 'shift-portal-dev'
+        image: us-east1-docker.pkg.dev/${{ env.PROJECT_ID }}/shift-portal-dev/shift-portal:develop-${{ github.run_number }}
+        region: us-east1
+        env_vars: |
+          REACT_APP_BASE_API_URL=https://genesis-api-dev.shiftpagamentos.com.br/
+
+    - name: Discord notification
+      uses: Ilshidur/action-discord@master
+      with:
+        args: '**#{{ GITHUB_RUN_NUMBER }} (develop) Shift-CO/Shift-Portal** - Deploy ${{ steps.deploy.outcome }} (verifique [aqui]( ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} ))'

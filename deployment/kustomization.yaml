@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- namespace.yml
+- deployment.yml
+- service.yml
+- hpa.yml
+images:
+- name: gcr.io//:TAG
+  newName: gcr.io//
+- name: gcr.io/PROJECT_ID/IMAGE:TAG
+  newName: gcr.io//
+- name: grc.io/PROJECT_ID/REPOSITORY/IMAGE:TAG
+  newName: gcr.io//
+  newTag: GITHUB_SHA

@@ -1,0 +1,19 @@
+[{
+    "id": 0,
+    "enum": "MEI",
+    "sigla": "MEI"
+},
+{
+    "id": 1,
+    "enum": "LIMITED",
+    "sigla": "LIMITADA"
+},{
+    "id": 2,
+    "enum": "INDIVIDUAL",
+    "sigla": "INDIVIDUAL"
+},{
+    "id": 3,
+    "enum": "ASSOCIATION",
+    "sigla": "ASSOCIAÇÃO"
+}
+]
