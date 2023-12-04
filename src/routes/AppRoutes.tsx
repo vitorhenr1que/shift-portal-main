@@ -5,6 +5,7 @@ import MakeCharge from "../pages/makeCharge/MakeCharge";
 import RecoverPassword from "../pages/recoverPassword/RecoverPassword";
 import Register from "../pages/registration/Register";
 import CashOut from '../pages/cashOut/CashOut';
+import Customer from '../pages/customer/Customer';
 
 
 export const AppRoutes = () => {
@@ -18,6 +19,7 @@ export const AppRoutes = () => {
             <Route path='/redefinir-senha' element={<RecoverPassword />} />
             <Route path='/cobrar' element={<MakeCharge />} />
             <Route path='/sacar' element={<CashOut />} />
+            <Route path='/clientes' element={<Customer />} />
         </Routes>
     );
 }

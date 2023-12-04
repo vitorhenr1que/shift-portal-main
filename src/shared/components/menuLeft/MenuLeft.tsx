@@ -130,11 +130,11 @@ export const MenuLeft: React.FC<IMenuLeftProviderProps> = ({ children }) => {
                 disabled={true}
               />
               <ListItemLink
-                to={""}
-                icon={<Groups2Outlined color="inherit" sx={{ width: 30, height: 30 }} />}
-                label="Clientes (em breve)"
+                to={"/clientes"}
+                icon={<Groups2Outlined color="primary" sx={{ width: 30, height: 30 }} />}
+                label="Clientes"
                 onClick={smDown ? toggleDrawerOpen : undefined}
-                disabled={true}
+                disabled={false}
               />
             </List>
           </Box>

@@ -61,6 +61,27 @@ export type Billing = {
     createdAt: Date
 }
 
+export type Customer = {
+    id: string,
+    name: string,
+    companyId: number,
+    email: string,
+    phone: string,
+    city: string,
+    createdAt: Date,
+    charges: number,
+    paidCharges: number,
+    pendingCharges: number,
+    adress: {
+        road: string,
+        neighborhood: string,
+        number: string,
+        state: string,
+        city: string,
+        postalCode: string
+    }
+}
+
 export type BillingBalance = {
     totalreceivedAmount: number,
     receivedAmount: number,
