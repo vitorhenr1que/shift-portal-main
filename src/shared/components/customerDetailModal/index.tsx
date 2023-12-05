@@ -4,12 +4,20 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import { CustomerButton } from '../../../pages/customer/styles';
 import { Actions, ChargeStats, ChargeStatsContainer, Container, CustomerDataContainer, CustomerDataRow, DivInfo, DivTitle, InfoContainer } from './styles';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Close from '@mui/icons-material/Close';
+import CustomerDetailTable from './customerDetailTable';
+import { Billing } from '../../../services/genesisApi/domain';
+import ChargesTable from '../chargesTable/ChargesTable';
 
 
 
 type Anchor = 'right';
+
+interface IChargesTableProps {
+  rows: Billing[],
+  resend: (id: string) => void
+}
 
 interface InfoDataProps{
   label: string;
@@ -21,6 +29,18 @@ interface ChargeDataProps{
   position: number;
 }
 
+function createData(id: string, companyId: number, userId: number, amount: number, netAmount: number, feeAmount: number, customerName: string, title: string, image: string, content: string, description: string, statusCode: number, status: string, dueDate: Date, createdAt: Date) {
+  return { id, companyId, userId, amount, netAmount, feeAmount, customerName, title, image, content, description, statusCode, status, dueDate, createdAt};
+}
+
+const rows2 = [
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+].sort((a, b) => (a.amount < b.amount ? -1 : 1));
 
 export default function CustomerModal():JSX.Element {
   const [chargeSelected, setChargeSelected] = useState(0)
@@ -53,6 +73,7 @@ export default function CustomerModal():JSX.Element {
     }
 
     return (
+      <div style={{display: 'flex' , flex: 1, position: 'relative'}}>
       <ChargeStats isClicked={`${chargeSelected === position ? "#F0EFFF" : "#fff"}`}>
         <Typography
           variant={'caption'}
@@ -72,6 +93,8 @@ export default function CustomerModal():JSX.Element {
         </Typography>
         <CustomerButton onClick={() => handleClickDetailButton()}>{chargeSelected === position && toggle === true ?  "Fechar" : "Detalhes"}</CustomerButton>
       </ChargeStats>
+      {chargeSelected === position && toggle ? <CustomerDetailTable rows={rows2} resend={() => {}}/> : ''}
+      </div>
     )
   }
 
@@ -93,13 +116,16 @@ export default function CustomerModal():JSX.Element {
     <Box
       sx={{ width: "66vw" }}
       role="presentation"
-      onClick={toggleDrawer('right', true)}
+      
       onKeyDown={toggleDrawer('right', false)}
     >
       <Container>
         <InfoContainer>
           <DivTitle>
-            <Close/>
+            <Button onClick={toggleDrawer('right', false)} style={{color: '#505050', minWidth: 0}}>
+              <Close/>
+            </Button>
+            
             <Typography
                 variant={'h5'}
                 overflow={"hidden"}
@@ -132,6 +158,8 @@ export default function CustomerModal():JSX.Element {
             <ChargeStatsData label='Cobranças pendentes' value={0} position={3}/>
           </ChargeStatsContainer>
         </InfoContainer>
+
+        
         <Actions>
 
         </Actions>
