@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import { CustomerButton } from '../../../pages/customer/styles';
+import { CustomerButton, CustomerButtonPurple } from '../../../pages/customer/styles';
 import { Actions, ChargeStats, ChargeStatsContainer, Container, CustomerDataContainer, CustomerDataRow, DivInfo, DivTitle, InfoContainer } from './styles';
 import { Button, Typography } from '@mui/material';
 import Close from '@mui/icons-material/Close';
@@ -34,18 +34,28 @@ function createData(id: string, companyId: number, userId: number, amount: numbe
 }
 
 const rows2 = [
-  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
-  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
-  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
-  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
-  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
-  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança de Vitor', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança a receber', '', 'content', 'description', 0, 'Pago', new Date(), new Date()),
+  createData('02', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança a receber', '', 'content', 'description', 0, 'Pago', new Date(), new Date()),
+  createData('02', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança paga', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança paga', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança paga', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança paga', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança a receber', '', 'content', 'description', 0, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança paga', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança a receber', '', 'content', 'description', 0, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança paga', '', 'content', 'description', 1, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança cancelada', '', 'content', 'description', 2, 'Pago', new Date(), new Date()),
+  createData('12', 32123123123, 123, 2000, 2000, 2000, 'Vitor Henrique', 'Cobrança cancelada', '', 'content', 'description', 2, 'Pago', new Date(), new Date()),
 ].sort((a, b) => (a.amount < b.amount ? -1 : 1));
 
+
+
 export default function CustomerModal():JSX.Element {
-  const [chargeSelected, setChargeSelected] = useState(0)
+  const [chargeSelected, setChargeSelected] = useState(5)
   const [toggle, setToggle] = useState(false)
   const [state, setState] = useState({right: false});
+
+
 
   function CustomerData({label, value}: InfoDataProps){
     return (
@@ -64,6 +74,8 @@ export default function CustomerModal():JSX.Element {
     </DivInfo>
     )
   }
+
+
   
   function ChargeStatsData({label, value, position}: ChargeDataProps){
 
@@ -89,11 +101,13 @@ export default function CustomerModal():JSX.Element {
           fontWeight={"bold"}
           overflow={"hidden"}
           textOverflow={"ellipsis"}
-          color={"#393099"}>{value}
+          color={"#393099"}> {position === 1 ? 
+                                  rows2.filter((index) => index.statusCode === 0 || 1 || 2 || 3 || 4).length : 
+                                  rows2.filter((index) => index.statusCode === position - 1).length}
         </Typography>
         <CustomerButton onClick={() => handleClickDetailButton()}>{chargeSelected === position && toggle === true ?  "Fechar" : "Detalhes"}</CustomerButton>
       </ChargeStats>
-      {chargeSelected === position && toggle ? <CustomerDetailTable rows={rows2} resend={() => {}}/> : ''}
+      
       </div>
     )
   }
@@ -158,10 +172,21 @@ export default function CustomerModal():JSX.Element {
             <ChargeStatsData label='Cobranças pendentes' value={0} position={3}/>
           </ChargeStatsContainer>
         </InfoContainer>
-
+        {chargeSelected && toggle ? <CustomerDetailTable rows={rows2.filter((index) => {
+          if(chargeSelected === 1){
+            return index.statusCode === 0 || 1 || 2
+          }
+          if(chargeSelected === 2){
+            return index.statusCode === 1
+          }
+          if(chargeSelected === 3){
+           return index.statusCode === 0
+          }
+        })} resend={() => {}}/> : ''}
         
         <Actions>
-
+          <CustomerButtonPurple style={{minWidth: '212px', height: '48px'}}>Alterar dados</CustomerButtonPurple>
+          <CustomerButton style={{minWidth: '212px', height: '48px'}}>Excluir Clientes</CustomerButton>
         </Actions>
       </Container>
     </Box>

@@ -63,5 +63,8 @@ background-color: ${(props) => (props.isClicked)};
 `
 
 export const Actions = styled.div`
-
+margin-top: 70px;
+gap: 12px;
+display: flex;
+justify-content: flex-end;
 `
