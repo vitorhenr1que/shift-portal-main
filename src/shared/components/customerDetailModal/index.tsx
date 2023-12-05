@@ -1,19 +1,13 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { CustomerButton } from '../../../pages/customer/styles';
-import { Actions, Container, CustomerDataContainer, CustomerDataRow, DivInfo, DivTitle, InfoContainer } from './styles';
+import { Actions, ChargeStats, ChargeStatsContainer, Container, CustomerDataContainer, CustomerDataRow, DivInfo, DivTitle, InfoContainer } from './styles';
 import { Typography } from '@mui/material';
 import Close from '@mui/icons-material/Close';
+
+
 
 type Anchor = 'right';
 
@@ -21,26 +15,65 @@ interface InfoDataProps{
   label: string;
   value: string;
 }
-function CustomerData({label, value}: InfoDataProps){
-  return (
-  <DivInfo>
-  <Typography
-  variant={'caption'}
-  overflow={"hidden"}
-  fontSize={14}
-  textOverflow={"ellipsis"}>{label}</Typography>
-  <Typography
-  variant={'h6'}
-  fontWeight={'bold'}
-  fontSize={16}
-  overflow={"hidden"}
-  textOverflow={"ellipsis"}>{value}</Typography>
-  </DivInfo>
-  )
+interface ChargeDataProps{
+  label: string;
+  value: number;
+  position: number;
 }
 
-export default function CustomerModal(): JSX.Element {
-  const [state, setState] = React.useState({right: false});
+
+export default function CustomerModal():JSX.Element {
+  const [chargeSelected, setChargeSelected] = useState(0)
+  const [toggle, setToggle] = useState(false)
+  const [state, setState] = useState({right: false});
+
+  function CustomerData({label, value}: InfoDataProps){
+    return (
+    <DivInfo>
+    <Typography
+    variant={'caption'}
+    overflow={"hidden"}
+    fontSize={14}
+    textOverflow={"ellipsis"}>{label}</Typography>
+    <Typography
+    variant={'h6'}
+    fontWeight={'bold'}
+    fontSize={16}
+    overflow={"hidden"}
+    textOverflow={"ellipsis"}>{value}</Typography>
+    </DivInfo>
+    )
+  }
+  
+  function ChargeStatsData({label, value, position}: ChargeDataProps){
+
+    function handleClickDetailButton(){
+      setChargeSelected(position)
+      setToggle(!toggle)
+    }
+
+    return (
+      <ChargeStats isClicked={`${chargeSelected === position ? "#F0EFFF" : "#fff"}`}>
+        <Typography
+          variant={'caption'}
+          fontSize={16}
+          fontWeight={"bold"}
+          overflow={"hidden"}
+          textOverflow={"ellipsis"}
+          color={chargeSelected === position ? '#393099' : '#505050'}>{label}
+        </Typography>
+        <Typography
+          variant={'h5'}
+          fontSize={32}
+          fontWeight={"bold"}
+          overflow={"hidden"}
+          textOverflow={"ellipsis"}
+          color={"#393099"}>{value}
+        </Typography>
+        <CustomerButton onClick={() => handleClickDetailButton()}>{chargeSelected === position && toggle === true ?  "Fechar" : "Detalhes"}</CustomerButton>
+      </ChargeStats>
+    )
+  }
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -93,6 +126,11 @@ export default function CustomerModal(): JSX.Element {
               <CustomerData label='CEP' value='00000-000'/>
             </CustomerDataRow>
           </CustomerDataContainer>
+          <ChargeStatsContainer>
+            <ChargeStatsData label='Cobranças criadas' value={6} position={1}/>
+            <ChargeStatsData label='Cobranças pagas' value={6} position={2}/>
+            <ChargeStatsData label='Cobranças pendentes' value={0} position={3}/>
+          </ChargeStatsContainer>
         </InfoContainer>
         <Actions>
 
@@ -100,6 +138,8 @@ export default function CustomerModal(): JSX.Element {
       </Container>
     </Box>
   );
+
+
 
   return (
     <div>

@@ -15,7 +15,7 @@ export const Button = styled.button`
 `;
 
 export const CustomerButton = styled.button`
-background-color: #fff;
+background: none;
 color: #5143E7;
 font-size: 16px;
 padding: 10px;
@@ -26,13 +26,9 @@ outline: none;
 font-family: 'Montserrat';
 transition: .2s;
 &:hover {
-  background-color: #5143E7;
-  color: #fff;
+  color: #393099;
 };
-&:active {
-  background-color: #4337CA;
-  color: #fff;
-};
+
 &:disabled {
   background-color: #fff;
   color: #505050;

@@ -30,9 +30,35 @@ flex-direction: column;
 gap: 1rem;
 `
 export const CustomerDataRow = styled.div`
-
 display: flex;
+`
 
+export const ChargeStatsContainer = styled.div`
+display: flex;
+justify-content: space-between;
+gap: .5rem;
+`
+
+interface props {
+    isClicked: string;
+}
+
+export const ChargeStats = styled.div<props>`
+padding: 16px 16px 16px 8px;
+display: flex;
+flex: 1;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+gap: 1rem;
+border: 1px solid #DFDFDF;
+border-radius: 8px;
+background-color: ${(props) => (props.isClicked)};
+
+&:focus {
+    background-color: #F0EFFF;
+    border: 1px solid #9993E0;
+}
 `
 
 export const Actions = styled.div`
