@@ -84,6 +84,18 @@ export default function CustomerModal():JSX.Element {
       setToggle(!toggle)
     }
 
+    function rowsFilter(){
+      if(position === 1){
+        return rows2.filter((index) => index.statusCode === 0 || 1 || 2 || 3 || 4).length
+      }
+      else if(position === 2) {
+        return rows2.filter((index) => index.statusCode === 1).length
+      }
+      else if(position === 3) {
+        return rows2.filter((index) => index.statusCode === 0).length
+      }
+    }
+
     return (
       <div style={{display: 'flex' , flex: 1, position: 'relative'}}>
       <ChargeStats isClicked={`${chargeSelected === position ? "#F0EFFF" : "#fff"}`}>
@@ -101,9 +113,7 @@ export default function CustomerModal():JSX.Element {
           fontWeight={"bold"}
           overflow={"hidden"}
           textOverflow={"ellipsis"}
-          color={"#393099"}> {position === 1 ? 
-                                  rows2.filter((index) => index.statusCode === 0 || 1 || 2 || 3 || 4).length : 
-                                  rows2.filter((index) => index.statusCode === position - 1).length}
+          color={"#393099"}> {rowsFilter()}
         </Typography>
         <CustomerButton onClick={() => handleClickDetailButton()}>{chargeSelected === position && toggle === true ?  "Fechar" : "Detalhes"}</CustomerButton>
       </ChargeStats>

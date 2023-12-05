@@ -9,6 +9,7 @@ import SearchBar from "../../shared/components/searchBar/SearchBar";
 import { LayoutBasePages } from "../../shared/layouts";
 import { Button } from "./styles";
 import CustomerTable from "../../shared/components/customerTable/CustomerTable";
+import CustomerCreationModal from "../../shared/components/customerCreationModal";
 
 interface createDataProps {
     id: string;
@@ -89,17 +90,10 @@ export default function Customer(){
             </Typography>
             <div style={{marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <SearchBar/>
-                <Button>
-                <Typography
-                        variant={'subtitle1'}
-                        whiteSpace={"normal"}
-                        overflow={"hidden"}
-                        textOverflow={"ellipsis"}
-                        color={'#fff'}
-                    >
-                        Cadastrar novo cliente
-            </Typography>
-                </Button>
+            
+                <CustomerCreationModal/>
+
+           
             </div>
             
             <div>
